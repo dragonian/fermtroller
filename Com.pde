@@ -102,9 +102,9 @@ void updateCom() {
         //TX Ready
         Wire.beginTransmission(BTNIC_I2C_ADDR);
         char timestamp[11];
-        Wire.send(ultoa(millis(), timestamp, 10));
-        Wire.send(0x09);
-        while(btnicI2C.getState() == BTNIC_STATE_TX) Wire.send(btnicI2C.tx());        
+        Wire.write(ultoa(millis(), timestamp, 10));
+        Wire.write(0x09);
+        while(btnicI2C.getState() == BTNIC_STATE_TX) Wire.write(btnicI2C.tx());        
         Wire.endTransmission();
       }
     }
@@ -112,7 +112,7 @@ void updateCom() {
     void btnicRX(int numBytes) {
       if(btnicI2C.getState() == BTNIC_STATE_RX) {
         for (byte i = 0; i < numBytes; i++) {
-          btnicI2C.rx(Wire.receive());
+          btnicI2C.rx(Wire.read());
           if(btnicI2C.getState() != BTNIC_STATE_RX) break;
         }
       }
